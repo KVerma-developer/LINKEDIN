@@ -1,0 +1,42 @@
+.topbar-main {
+    width: 100%;
+    height: 70px;
+    background-color: rgb(217, 214, 214);
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    }
+   
+    
+  .linkedinLogo {
+    width: 65px;
+    margin-left: 20px;
+  }
+  
+  .react-icons {
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+     width: 55%;
+    margin-left: 30px;
+  }
+  .react-icon {
+    color: #787878;
+    cursor: pointer;
+  }
+  
+  .react-icon:hover {
+    color: black;
+  }
+  .user-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute;
+    right: 168px;
+    cursor: pointer;
+  }
+
+  ///-------------------------
+  // Define the base styles for the icon
