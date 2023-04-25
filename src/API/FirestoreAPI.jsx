@@ -1,5 +1,6 @@
 import {firestore} from '../firebaseConfig';
-import {addDoc,collection,onSnapshot,doc,updateDoc,query,where} from 'firebase/firestore';
+import {addDoc,collection,onSnapshot,doc,updateDoc,query,where,setDoc, deleteDoc} from 'firebase/firestore';
+import { useRef } from 'react';
 
 import {toast} from "react-toastify";
 
@@ -11,6 +12,8 @@ import {toast} from "react-toastify";
 ///this is for fire store
 let dbRef=collection(firestore,"posts"); //i changed postsRef to dbRef nothing is it ther is not problem
 let userRef=collection(firestore,"users");
+let likeRef =collection(firestore,"likes");
+let commentRef=collection(firestore,'comments')
 
 
 export const postStatus=(object)=>{ 
@@ -102,8 +105,61 @@ export const getSingleUser = (setCurrentUser, email) => {
         response.docs.map((docs) => {
           return { ...docs.data(), id: docs.id };
         })[0]
-      );
+      )
     });
+  };
+
+
+  export const likePost=(userId,postId,liked)=>{
+  try{ 
+    let docToLike=doc(likeRef,`${userId}_${postId}`);
+   if(liked){
+    deleteDoc(docToLike);
+
+   }
+   else{
+    setDoc(docToLike,{userId,postId});
+   }
+   
+}
+catch(err){
+    console.log(err);
+}
+    
+
+  };
+
+  export const getLikesByUser=(userId,postId,setLiked,setLikesCount)=>{
+    try{ 
+        let likeQuery=query(likeRef,where('postId','==',postId))
+       
+        onSnapshot(likeQuery,(response)=>{
+            let likes= response.docs.map((doc)=> doc.data());
+            let likesCount=likes.length;
+            const isLiked=likes.some((Like)=> Like.userId=== userId)
+
+            setLikesCount(likesCount);
+            setLiked(isLiked)
+        });
+     }
+     catch(err){
+         console.log(err);
+     }
+
+  };
+
+  export const postComment =(postId,comment,timeStamp)=>{
+    try{
+        addDoc(commentRef,{
+            postId
+            ,comment
+            ,timeStamp});
+
+    }
+    catch(err){
+        console.log(err)
+    }
+
   };
 
 // export const getSingleUser=(setCurrentUser,email)=>{

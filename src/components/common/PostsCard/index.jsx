@@ -13,8 +13,8 @@ export default function PostsCard({posts ,id}) {
     getCurrentUser(setCurrentUser)
   },[])
 
-  console.log(posts.id);
   
+
   
 
 
@@ -38,7 +38,7 @@ export default function PostsCard({posts ,id}) {
         </p>
       <p className='timestamp'>  {posts.timeStamp}</p>   
       <p className='status'>{posts.status}</p>
-      <LikeButton userId={currentUser?.id}  />  {/* --this file in LikeButton .jsx-- */}
+      <LikeButton userId={currentUser?.userId} postId={posts.id} />  {/* --this file in LikeButton .jsx-- */}
       
       
     </div>

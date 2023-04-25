@@ -1,8 +1,9 @@
 .like-container {
-    display: flex;
-    justify-content: center;
+    // display: table-column;
+    display: table-column;
+    justify-content: left;
   
-    flex-direction: column;
+    flex-direction: row;
     gap: 5px;
     padding: 7px 10px;
     cursor: pointer;
@@ -16,6 +17,8 @@
   
     .comment-input {
       height: 40px;
+      width: 515px;
+      
       background-color: whitesmoke;
       padding-left: 10px;
       border-radius: 30px;
@@ -68,7 +71,7 @@
       }
     }
     .hr-line {
-      margin-top: -17px;
+      margin-top: -10px;
       hr {
         border-top: 1px solid rgb(181, 181, 181);
       }
