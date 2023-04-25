@@ -148,12 +148,13 @@ catch(err){
 
   };
 
-  export const postComment =(postId,comment,timeStamp)=>{
+  export const postComment =(postId,comment,timeStamp,name)=>{
     try{
         addDoc(commentRef,{
             postId
             ,comment
-            ,timeStamp});
+            ,timeStamp,
+        name});
 
     }
     catch(err){
@@ -161,6 +162,31 @@ catch(err){
     }
 
   };
+
+
+  export const getComments =(postId,setComments)=>{
+    try{
+        let singlePostQuery=query(commentRef,where('postId','==',postId))
+        onSnapshot(singlePostQuery,(response)=>{
+            const comments=response.docs.map((doc)=>{
+                return{
+                    id:doc.id,
+                    ...doc.data(),
+                    
+                };
+            });
+            setComments (comments);
+        });
+
+        
+
+        
+ 
+
+    }catch(err){
+        console.log(err);
+    }
+  }
 
 // export const getSingleUser=(setCurrentUser,email)=>{
 //     const singleUserQuery=query(userRef,where("email","==",email));

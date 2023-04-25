@@ -48,7 +48,7 @@ export default function LoginComponent(){
             <img src={linkedinLogo} className='linkedinLogo'/>
             <div className='login-wrapper-inner'>
 
-            <h1 className='heading'>Sign In</h1>
+            <h1 className='heading' >Sign In</h1>
             <p className='sub-heading'>Stay updated on your professional world</p>
             
             

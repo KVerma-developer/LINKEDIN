@@ -2,19 +2,21 @@ import React,{useMemo,useState} from 'react';
 import './index.scss';
 
 import {AiOutlineLike,AiTwotoneLike,AiOutlineComment} from 'react-icons/ai'
-import { getLikesByUser, likePost, postComment } from '../../../API/FirestoreAPI';
+import { getLikesByUser, likePost, postComment,getComments } from '../../../API/FirestoreAPI';
 import { getCurrentTimeStamp } from '../../../helpers/useMoment';
 
-export default function LikeButton({userId,postId}) {
+
+export default function LikeButton({userId,postId,currentUser}) {
   const [likesCount,setLikesCount]=useState(0);
   const [liked,setLiked]=useState(false);
   const [showCommentBox,setShowCommentBox]=useState(false);
   const [comment,setComment]=useState("");
+  const[comments,setComments]=useState([]);
 
   const getComment=(event)=>{
 
-    setComment(event.target.value)
-  }
+    setComment(event.target.value);
+  };
 
   const handleLike=()=>{
     likePost(userId,postId,liked);
@@ -22,7 +24,7 @@ export default function LikeButton({userId,postId}) {
 
 
   const addComment=()=>{
-    postComment(postId,comment,getCurrentTimeStamp('LLL'));
+    postComment(postId,comment,getCurrentTimeStamp('LLL'),currentUser?.name);
     setComment("");
     // .then(()=>{
     //   setComment('')
@@ -38,8 +40,10 @@ export default function LikeButton({userId,postId}) {
 
   useMemo(()=>{
     getLikesByUser(userId,postId,setLiked,setLikesCount);
+    getComments(postId,setComments);
 
-  },[userId,postId])
+
+  },[userId,postId]);
 
 
 
@@ -57,11 +61,11 @@ export default function LikeButton({userId,postId}) {
 
 
 
-      <div className='likes-comment-inner' onClick={()=>{setShowCommentBox(true)}}>
+      <div className='likes-comment-inner' onClick={()=>{setShowCommentBox(!showCommentBox)}}>
 
        {<AiOutlineComment size={25} color={showCommentBox?'#0a66c2':'#212121'}/> }
       
-      <p className={showCommentBox ? 'blue':'black' }  >Comment
+      <p className={showCommentBox ? 'blue':'black' }  >Comments
       </p>
       </div>
       </div>
@@ -76,7 +80,20 @@ export default function LikeButton({userId,postId}) {
         name='comment'
         value={comment}/>
 
-      <button className='add-comment-btn' onClick={addComment}>Add Comment</button>
+      <button className='add-comment-btn' onClick={addComment}>Add Comment
+      </button>
+      {comments.length>0? comments.map((comment)=>{
+        return(<div className='all-comments'>
+          <p className='name'>{comment.name}</p>
+          
+          <p className='comment'><span>• </span>{comment.comment}</p>
+          
+
+          <p className='timestamp'>{comment.timeStamp}</p>
+
+        </div>)
+
+      }):<></>}
       </> ):(<></>)}
 
 

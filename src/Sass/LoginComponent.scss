@@ -14,16 +14,18 @@ body {
   height: 100vh;
   
 .login-wrapper-inner {
-    margin-left: 200px;
+    margin-left: -208px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
   .heading {
+   
     
     font-family: system-ui;
     font-weight: 500;
+    margin-left: 180px;
     
     color: rgba(0, 0, 0, 0.9);
   }

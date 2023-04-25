@@ -1,7 +1,9 @@
 import React ,{useState,useMemo}from 'react';
-import { getSingleStatus,getSingleUser } from '../../../API/FirestoreAPI';
+import { getSingleStatus,getSingleUser, getStatus } from '../../../API/FirestoreAPI';
 import { FaBeer } from 'react-icons/fa';
 import { HiPencilAlt } from 'react-icons/hi';
+import { uploadImage as uploadImageAPI } from '../../../API/imageUpload';
+
 
 import './index.scss';
 import PostsCard from '../PostsCard';
@@ -13,6 +15,22 @@ export default function ProfileCard({onEdit,currentUser}) {
   let location =useLocation();
   const [allStatuses,setAllStatus]=useState([]);
   const [currentProfile,setCurrentProfile]=useState({});
+  const [comments,setComments]=useState([]);
+  const [currentImage,setCurrentImage]=useState({});
+
+  const getImage=(event)=>{
+    setCurrentImage(event.target.files[0]);
+
+  };
+   ///this is not API we impoet api as check and dont be confuse
+   const uploadImage=()=>{
+    uploadImageAPI(currentImage);
+
+   };
+  
+  useMemo(()=>{
+    getStatus(setAllStatus); //add for get post in profile
+  },[])
 
   useMemo(()=>{
     if (location?.state?.id){
@@ -31,6 +49,8 @@ export default function ProfileCard({onEdit,currentUser}) {
     <>
     
     <div className='profile-card'>
+    <input type={'file'} onClick={getImage} />
+    <button onClick={uploadImage} >Upload button</button>
       <div className='edit-btn'>
       <HiPencilAlt className='edit-icon' onClick={onEdit} size={25}/>
         
@@ -94,7 +114,7 @@ export default function ProfileCard({onEdit,currentUser}) {
     <div className='post-status-main'>
        {allStatuses.filter((item)=>{
         return item.userEmail === localStorage.getItem("userEmail")
-       }).map((posts)=>{
+       })?.map((posts)=>{
         return(
           <div key={posts.id}>
            <PostsCard posts={posts}/>
