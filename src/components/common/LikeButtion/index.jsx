@@ -6,7 +6,7 @@ import { getLikesByUser, likePost, postComment,getComments } from '../../../API/
 import { getCurrentTimeStamp } from '../../../helpers/useMoment';
 
 
-export default function LikeButton({userId,postId,currentUser}) {
+export default function LikeButton({id,postId,currentUser}) {
   const [likesCount,setLikesCount]=useState(0);
   const [liked,setLiked]=useState(false);
   const [showCommentBox,setShowCommentBox]=useState(false);
@@ -19,7 +19,7 @@ export default function LikeButton({userId,postId,currentUser}) {
   };
 
   const handleLike=()=>{
-    likePost(userId,postId,liked);
+    likePost(id,postId,liked);
   };
 
 
@@ -39,11 +39,11 @@ export default function LikeButton({userId,postId,currentUser}) {
   
 
   useMemo(()=>{
-    getLikesByUser(userId,postId,setLiked,setLikesCount);
+    getLikesByUser(id,postId,setLiked,setLikesCount);
     getComments(postId,setComments);
 
 
-  },[userId,postId]);
+  },[id,postId]);
 
 
 

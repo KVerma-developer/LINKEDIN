@@ -79,11 +79,11 @@ export default function Topbar() {
       <div className='react-icons'>
         <BiSearchAlt2 size={30} className='react-icon' />
         <AiOutlineHome size={30} className='react-icon' onClick={() => goToRoute('/Home')} />
-        <FiUsers size={30} className='react-icon' onClick={() => goToRoute('/Profile')} />
+        <FiUsers size={30} className='react-icon' onClick={() => goToRoute('/Connections')} />
         <BiBriefcaseAlt2 size={30} className='react-icon' />
         <BiMessageAltDetail size={30} className='react-icon' />
         <BiBell size={30} className='react-icon' />
-        <BiUserCircle size={30} className='react-icon'  />
+        
       </div>
       <img src={linkedInUser} alt='linkeduser' className='user-logo' onClick={toggleProfilePopup} />
 

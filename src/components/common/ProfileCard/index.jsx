@@ -1,8 +1,11 @@
-import React ,{useState,useMemo}from 'react';
-import { getSingleStatus,getSingleUser, getStatus } from '../../../API/FirestoreAPI';
+import React ,{useState,useMemo, useEffect}from 'react';
+import { getSingleStatus,getSingleUser, getStatus,editProfile } from '../../../API/FirestoreAPI';
 import { FaBeer } from 'react-icons/fa';
 import { HiPencilAlt } from 'react-icons/hi';
+import FileUploadModal from '../FileUploadModal';
 import { uploadImage as uploadImageAPI } from '../../../API/imageUpload';
+
+
 
 
 import './index.scss';
@@ -17,16 +20,21 @@ export default function ProfileCard({onEdit,currentUser}) {
   const [currentProfile,setCurrentProfile]=useState({});
   const [comments,setComments]=useState([]);
   const [currentImage,setCurrentImage]=useState({});
+  const [imageLink,setImageLink]=useState('');
+  const [modalOpen,setModalOpen]=useState(false);
+  const [progress,setProgress]=useState(0);
 
   const getImage=(event)=>{
     setCurrentImage(event.target.files[0]);
+    
 
   };
    ///this is not API we impoet api as check and dont be confuse
    const uploadImage=()=>{
-    uploadImageAPI(currentImage);
+    uploadImageAPI(currentImage,currentUser.id,setModalOpen,setProgress,setCurrentImage);
 
    };
+  //  console.log(currentUser?.id)
   
   useMemo(()=>{
     getStatus(setAllStatus); //add for get post in profile
@@ -42,15 +50,26 @@ export default function ProfileCard({onEdit,currentUser}) {
     }
 
   },[]);
+
+  // useEffect(()=>{
+  //   editProfile(currentUser?.id,imageLink);
+
+  // },[imageLink]);
   
 
 
   return (
     <>
+    <FileUploadModal
+     modalOpen={modalOpen} 
+    setModalOpen={setModalOpen}
+     getImage={getImage}
+      uploadImage={uploadImage}
+      currentImage={currentImage}
+      progress={progress}/>
     
     <div className='profile-card'>
-    <input type={'file'} onClick={getImage} />
-    <button onClick={uploadImage} >Upload button</button>
+  
       <div className='edit-btn'>
       <HiPencilAlt className='edit-icon' onClick={onEdit} size={25}/>
         
@@ -58,6 +77,9 @@ export default function ProfileCard({onEdit,currentUser}) {
       <div className='profile-info'>
       
       <div>
+      <img className='profile-image'
+        onClick={()=>setModalOpen(true)}
+         src={currentUser?.imageLink} alt='profile-image'/>
 
        <h3 className='userName'>{Object.values(currentProfile).length===0
         ? currentUser.name

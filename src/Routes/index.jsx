@@ -6,7 +6,7 @@ import {
 
   import Login from "../pages/Login";  
 import Register from "../pages/Register";
-import Home from "../pages/Home";
+import ConnectionsLayout from "../Layouts/ConnectionsLayout";
 import HomeLayout from "../Layouts/HomeLayout";
 import ProfileLayout from "../Layouts/ProfileLayout";
 
@@ -29,6 +29,11 @@ export const router = createBrowserRouter([
     {
       path:"/Profile",
       element:<ProfileLayout/>
+    },
+    ,
+    {
+      path:"/Connections",
+      element:<ConnectionsLayout/>
     },
     
   ]);

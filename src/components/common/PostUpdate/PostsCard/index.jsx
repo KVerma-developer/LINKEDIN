@@ -38,7 +38,7 @@ export default function PostsCard({posts ,id}) {
         </p>
       <p className='timestamp'>  {posts.timeStamp}</p>   
       <p className='status'>{posts.status}</p>
-      <LikeButton userId={currentUser?.userId} postId={posts.id} currentUser={currentUser}/>  {/* --this file in LikeButton .jsx-- */}
+      <LikeButton id={currentUser?.id} postId={posts.id} currentUser={currentUser}/>  {/* --this file in LikeButton .jsx-- */}
       
       
     </div>

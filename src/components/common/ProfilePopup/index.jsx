@@ -12,19 +12,23 @@ export default function ProfilePopup() {
   useMemo(()=>{
     getCurrentUser(setCurrentUser);
   },[]);
+  
+  const goToRoute = (route) => {
+    navigate(route);
+  };
 
   return (
     <div className='popup-card'>
-      <p>{currentUser.name}</p>
+      <p>{currentUser?.name}</p>
       
-      <p>{currentUser.headline}</p>
-      
+      <p>{currentUser?.headline}</p>
+     
       
       <Button title='View Porfile'
       onClick={()=>
-        navigate("/profile",
+        goToRoute("/profile", /// i changed navigate to geToRoute
         {state:{
-          id:currentUser?.userID,
+          id:currentUser?.id,
         },
         }
         )

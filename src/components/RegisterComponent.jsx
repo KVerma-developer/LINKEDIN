@@ -13,6 +13,7 @@ import { getUniqueID } from '../helpers/getUniqueId';
 
 
 
+
 // const login=()=>{
 //     let res=  LoginAPI();
 //     console.log(res) };
@@ -26,7 +27,9 @@ export default function RegisterComponent(){
             toast.success('Congratulations ! You Created Account Successfully. ');
             postUserData ({userID:getUniqueID(),
                 name:credentails.name,
-                email:credentails.email});
+                email:credentails.email,
+            imageLink:'https://imglarger.com/Images/before-after/ai-image-enlarger-1-after-2.jpg'});
+                
             navigate('/home');
             localStorage.setItem('userEmail',res.user.email);
     

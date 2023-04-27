@@ -2,7 +2,7 @@ import React from 'react';
 import { Button,  Modal } from 'antd';
 import './index.scss';
 
-const ModalComponent= ({sendStatus ,modalOpen,setModalOpen,status,setStatus}) => {
+const ModalComponent= ({sendStatus ,modalOpen,setModalOpen,status,setStatus,isEdit,updateStatus}) => {
   
   
 
@@ -14,19 +14,19 @@ const ModalComponent= ({sendStatus ,modalOpen,setModalOpen,status,setStatus}) =>
         title="Express Your World !"
         centered
         open={modalOpen}
-        onOk={() => setModalOpen(false)}
-        onCancel={() => setModalOpen(false)}
+        onOk={() => {setStatus(""),setModalOpen(false)}}
+        onCancel={() => {setStatus(""),setModalOpen(false)}}
         footer={[
             
             <Button
               key="submit"
               type="primary"
               disabled={status.length > 0 ? false : true}
-              onClick={sendStatus}
+              onClick={isEdit?updateStatus:sendStatus}
               
               
             >
-              Post
+              {isEdit?"Update":"Post"}
             </Button>,
           ]}
       >
