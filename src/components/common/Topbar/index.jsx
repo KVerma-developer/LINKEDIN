@@ -36,7 +36,8 @@
 //     </div>
 //   )
 // };
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import SearchUsers from '../SearchUsers';
 import './index.scss';
 import linkedinLogo from '../../../assets/linkedinLogo.png';
 import { AiOutlineHome } from "react-icons/ai";
@@ -46,11 +47,20 @@ import linkedInUser from '../../../assets/linkedinuser.png';
 import { useNavigate } from 'react-router-dom';
 import ProfilePopup from '../ProfilePopup';
 import { signOut, getAuth } from 'firebase/auth';
+import { getAllUsers } from '../../../API/FirestoreAPI';
+ 
+
 
 export default function Topbar() {
   let navigate = useNavigate();
   const auth = getAuth();
   const [showProfilePopup, setShowProfilePopup] = useState(false);
+  const [isSearch,setIsSearch]=useState(false);
+  const [searchInput,setSerachInput]=useState('');
+  const [users,setUsers]=useState([]);
+  const [filteredUsers ,setFilteredUsers]=useState([]);
+
+
 
   const onLogout = async () => {
     try {
@@ -60,34 +70,100 @@ export default function Topbar() {
       console.log(err);
     }
   };
+  const openUser=(user)=>{
+    navigate('/Profile',{state:{id:user.id,email: user.email,
+    },
+  });
 
+  };
   const toggleProfilePopup = () => {
     setShowProfilePopup(!showProfilePopup);
   };
 
+  useEffect(()=>{
+    getAllUsers(setUsers)
+  })
+
   const goToRoute = (route) => {
     navigate(route);
   };
+  const handleSearch=()=>{
+    if (searchInput !== ''){
+
+    let searched=users.filter((user)=>{
+      return Object.values(user).join('').toLowerCase().includes(searchInput.toLowerCase());
+
+    })
+    setFilteredUsers(searched);
+  }
+  else{
+    setFilteredUsers(users);
+
+  }
+  };
+
+  useEffect(()=>{
+    let debounced=setTimeout(()=>{
+      handleSearch();
+
+      },1000);
+    return()=>clearTimeout(debounced)
+
+
+  },[searchInput]);
+
+
 
   const logoutUser = () => {
     onLogout();
   };
 
   return (
-    <div className='topbar-main'>
-      <img className='linkedinLogo' src={linkedinLogo} alt='logo' />
-      <div className='react-icons'>
-        <BiSearchAlt2 size={30} className='react-icon' />
+    <div className='topbar-main'>  
+    {/* {popupVisible ? (<div className='popup-position'>
+      <ProfilePopup/>
+      </div>):(<></>)} */}
+       <img className='linkedinLogo' src={linkedinLogo} alt='LinkedIn-logo' />
+      {isSearch ? <SearchUsers setIsSearch={setIsSearch} setSearchInput={setSerachInput}/>: (<div className='react-icons'>
+      
+     
+      
+        <BiSearchAlt2 size={30} className='react-icon' onClick={()=>setIsSearch(true)} />
         <AiOutlineHome size={30} className='react-icon' onClick={() => goToRoute('/Home')} />
         <FiUsers size={30} className='react-icon' onClick={() => goToRoute('/Connections')} />
         <BiBriefcaseAlt2 size={30} className='react-icon' />
         <BiMessageAltDetail size={30} className='react-icon' />
         <BiBell size={30} className='react-icon' />
         
-      </div>
+      </div>)}
+
+
+      
+     
+
       <img src={linkedInUser} alt='linkeduser' className='user-logo' onClick={toggleProfilePopup} />
 
       {showProfilePopup && <ProfilePopup onLogout={onLogout} />}
+
+      {searchInput.length===0 ?
+      (<></>):(
+      <div className='search-results' >
+                                      
+      {filteredUsers.length===0 ?(<div  className='search-inner' >Related Data not found!</div>): 
+      (filteredUsers.map((user)=>(
+               <div   className='search-inner' onClick={()=>openUser(user)} >
+                   <img   src={user.imageLink} />
+                   <p className='name' >{user.name}</p>
+               </div>
+  
+
+  ))
+  )}
+
+    </div>
+      ) }
+
+      
     </div>
   )
 };

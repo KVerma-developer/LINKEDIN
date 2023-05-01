@@ -22,6 +22,7 @@ export default function PostStatus({currentUser}) {
     const [allStatuses,setAllStatus]=useState([]);
     const [isEdit,setIsEdit]=useState(false);
     
+    
     const sendStatus=async()=>{
       let object ={
         status:status,
@@ -30,6 +31,7 @@ export default function PostStatus({currentUser}) {
         userName:currentUser.name,
         userEmail:currentUser.email,
         postID:getUniqueID(),
+
         userID:currentUser.id,
         
         
@@ -50,7 +52,8 @@ export default function PostStatus({currentUser}) {
     
 
   },[])  ;
-  console.log(currentUser);
+
+  
  
 const getEditData=(posts)=>{
   setModalOpen(true);

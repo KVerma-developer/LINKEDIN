@@ -13,22 +13,22 @@ export default function ProfilePopup() {
     getCurrentUser(setCurrentUser);
   },[]);
   
-  const goToRoute = (route) => {
-    navigate(route);
-  };
+  // const goToRoute = (route) => {
+  //   navigate(route);
+  // };
 
   return (
     <div className='popup-card'>
-      <p>{currentUser?.name}</p>
+      <p className='name'>{currentUser?.name}</p>
       
-      <p>{currentUser?.headline}</p>
+      <p className='headline'>{currentUser?.headline}</p>
      
       
       <Button title='View Porfile'
       onClick={()=>
-        goToRoute("/profile", /// i changed navigate to geToRoute
+        navigate("/profile", /// i changed navigate to geToRoute
         {state:{
-          id:currentUser?.id,
+          id:currentUser?.id
         },
         }
         )

@@ -14,6 +14,7 @@ let postsRef=collection(firestore,"posts"); //i changed postsRef to postsRef not
 let userRef=collection(firestore,"users");
 let likeRef =collection(firestore,"likes");
 let commentRef=collection(firestore,'comments')
+let connectionRef=collection(firestore,"connections");
 
 
 
@@ -223,7 +224,47 @@ catch(err){
     }catch(err){
         console.log(err);
     }
+  };
+
+///like post api is used there as same syantax as is it
+  export const addConnection=(userId,targetId)=>{
+    try{ 
+      let connectionToAdd=doc(connectionRef,`${userId}_${targetId}`);
+      setDoc(connectionToAdd,{userId,targetId});  ///this will be appear in firebase
+      toast.success("Connection Added");
+  
+     }
+  catch(err){
+      console.log(err);
   }
+      
+  
+    };
+
+
+
+    ////getLikesByUser api fucntion is used there for get connection as get likes
+
+    export const getConnection=(userId,targetId,setIsConnected)=>{
+        try{ 
+            let connectionQuery=query(connectionRef,where('targetId','==',targetId))
+           
+            onSnapshot(connectionQuery,(response)=>{
+                let connections= response.docs.map((doc)=> doc.data());
+                
+                const isConnected=connections.some((connection)=> connection.userId=== userId)
+
+
+                setIsConnected(isConnected);
+    
+                
+            });
+         }
+         catch(err){
+             console.log(err);
+         }
+    
+      };
 
 // export const getSingleUser=(setCurrentUser,email)=>{
 //     const singleUserQuery=query(userRef,where("email","==",email));
