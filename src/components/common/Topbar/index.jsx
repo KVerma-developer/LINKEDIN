@@ -47,11 +47,11 @@ import linkedInUser from '../../../assets/linkedinuser.png';
 import { useNavigate } from 'react-router-dom';
 import ProfilePopup from '../ProfilePopup';
 import { signOut, getAuth } from 'firebase/auth';
-import { getAllUsers } from '../../../API/FirestoreAPI';
+import { getAllUsers, getCurrentUser } from '../../../API/FirestoreAPI';
  
 
 
-export default function Topbar() {
+export default function Topbar({currentUser}) {
   let navigate = useNavigate();
   const auth = getAuth();
   const [showProfilePopup, setShowProfilePopup] = useState(false);
@@ -141,7 +141,7 @@ export default function Topbar() {
       
      
 
-      <img src={linkedInUser} alt='linkeduser' className='user-logo' onClick={toggleProfilePopup} />
+      <img src={currentUser.imageLink} alt='linkeduser' className='user-logo' onClick={toggleProfilePopup} />
 
       {showProfilePopup && <ProfilePopup onLogout={onLogout} />}
 

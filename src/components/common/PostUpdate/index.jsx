@@ -7,6 +7,8 @@ import ModalComponent from '../Modal';
 import { getStatus, postStatus,updatePost} from '../../../API/FirestoreAPI';
 import { getItem } from 'localforage';
 import { getUniqueID } from '../../../helpers/getUniqueId';
+import { uploadPostImage } from '../../../API/imageUpload';
+
 
 
 
@@ -21,6 +23,10 @@ export default function PostStatus({currentUser}) {
     
     const [allStatuses,setAllStatus]=useState([]);
     const [isEdit,setIsEdit]=useState(false);
+    // const [currentImage,setCurrentImage]=useState({}); don't need this
+    const[postImage,setPostImage]=useState('');
+
+    
     
     
     const sendStatus=async()=>{
@@ -31,8 +37,8 @@ export default function PostStatus({currentUser}) {
         userName:currentUser.name,
         userEmail:currentUser.email,
         postID:getUniqueID(),
-
         userID:currentUser.id,
+        postImage:postImage,
         
         
         
@@ -68,7 +74,7 @@ const getEditData=(posts)=>{
 const updateStatus=()=>{
 
  
-  updatePost(currentPost.id,status);
+  updatePost(currentPost.id,status,postImage);
   setModalOpen(false);
 
 
@@ -99,6 +105,11 @@ const updateStatus=()=>{
        setModalOpen={setModalOpen}
        isEdit={isEdit}
        updateStatus={updateStatus}
+       postImage={postImage}
+       uploadPostImage={uploadPostImage}
+       setPostImage={setPostImage}
+       currentPost={currentPost}
+       setCurrentPost={setCurrentPost}
        />
 
 

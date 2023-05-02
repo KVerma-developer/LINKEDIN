@@ -16,6 +16,7 @@ export const uploadImage =(file,id,setModalOpen,setProgress,setCurrentImage)=>{
 
             
 
+            
             setProgress(progress);
             
     },(error)=>{
@@ -25,13 +26,39 @@ export const uploadImage =(file,id,setModalOpen,setProgress,setCurrentImage)=>{
         .then((response)=>{
             editProfile(id,{imageLink:response}); //id-id
             setModalOpen(false);
-            setProgress(0);
+            setProgress(0);   // this is creating problem is show percent
             setCurrentImage({});
         });
     }
     );
 
-}
+};
+
+export const uploadPostImage =(file,setPostImage,setProgress)=>{
+    const postPicRef=ref(storage,`postImages/${file.name}`) ;//for adding forlder in fireimage storage forseperate
+
+    const uploadTask =uploadBytesResumable(postPicRef,file);
+
+    uploadTask.on('state_changed',(snapshot)=>{
+        const progress=Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes)*100);
+
+            
+
+            setProgress(progress);
+            
+    },(error)=>{
+        console.log(error)
+    },()=>{
+        getDownloadURL(uploadTask.snapshot.ref)
+        .then((response)=>{
+            setPostImage(response);
+        });
+        
+    }
+    );
+
+};
 
 
 // import React, { useState } from "react";

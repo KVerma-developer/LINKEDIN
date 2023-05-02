@@ -1,8 +1,8 @@
 import React ,{useState}from 'react';
-import { Button,Modal,Progress, Space  } from 'antd';
+import { Button,Modal,Progress  } from 'antd';
 import './index.scss'
 
-export default function FileUploadModal({modalOpen,setModalOpen,getImage,uploadImage,currentImage,progress}) {
+export default function FileUploadModal({modalOpen,setModalOpen,getImage,uploadImage,currentImage,progress, }) {
   return (
     <div>
       <Modal
@@ -22,7 +22,7 @@ export default function FileUploadModal({modalOpen,setModalOpen,getImage,uploadI
               <p>{currentImage.name}</p>
               <label className='upload-btn' for='image-upload' >Add an Image</label>
              
-              {progress === 0? (<></>):(<div className='progress-bar'>
+              {progress === 0 ? (<></>):(<div className='progress-bar'>
     <Progress type="circle" percent={progress} />
     </div>)
     }
